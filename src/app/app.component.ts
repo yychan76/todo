@@ -63,7 +63,7 @@ export class AppComponent {
     // https://www.digitalocean.com/community/tutorials/angular-custom-svg-icons-angular-material
     this.matIconRegistry.addSvgIcon(
       'logo',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/logo.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/logo.svg')
     );
   }
 
