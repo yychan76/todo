@@ -10,6 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
 import { Todo } from './Todo';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { map, Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,6 +30,11 @@ export class AppComponent {
   ]);
   editTodoId: string | undefined;
   showUpdateButton: boolean = false;
+  // observes if the breakpoint matches the Handset size inside the Breakpoints
+  // https://stackoverflow.com/questions/47477601/how-to-change-the-touchui-property-on-mat-datepicker-in-angular-material
+  isHandset: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map((result) => result.matches));
 
   taskFormControl = new FormControl('', [Validators.required]);
   priorityFormControl = new FormControl('', [Validators.required]);
@@ -35,7 +42,11 @@ export class AppComponent {
 
   // constructor only runs once when the application is started
   // ngOnInit will be called each time the page is refreshed, for showing of date retrieved
-  constructor(private fb: FormBuilder, private dialog: MatDialog) {
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver
+  ) {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.form = this.fb.group({
       task: this.taskFormControl,
