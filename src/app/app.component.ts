@@ -12,6 +12,10 @@ import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
 import { Todo } from './Todo';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, Observable } from 'rxjs';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -45,7 +49,9 @@ export class AppComponent {
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.form = this.fb.group({
@@ -53,6 +59,12 @@ export class AppComponent {
       priority: this.priorityFormControl,
       dueDate: this.dueDateFormControl,
     });
+
+    // https://www.digitalocean.com/community/tutorials/angular-custom-svg-icons-angular-material
+    this.matIconRegistry.addSvgIcon(
+      'logo',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/logo.svg')
+    );
   }
 
   ngOnInit(): void {
@@ -161,5 +173,12 @@ export class AppComponent {
           local storage and is not synced across devices or browsers.`,
       },
     });
+  }
+
+  priorityChanged(picker: MatDatepicker<any>) {
+    // if the date picker is empty open it, otherwise trigger the validators on it
+    this.dueDateFormControl.hasError('required')
+      ? picker.open()
+      : this.dueDateFormControl.markAsTouched();
   }
 }

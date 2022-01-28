@@ -14,6 +14,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +35,7 @@ import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-SG'},

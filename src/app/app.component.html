@@ -1,6 +1,7 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Simple Todo App</span>
+    <mat-icon svgIcon="logo"></mat-icon
+    ><span class="padding-left-10px">Simple Todo App</span>
     <span class="spacer"></span>
     <button
       mat-icon-button
@@ -21,12 +22,18 @@
     <div
       fxLayout="row wrap"
       fxLayout.lt-sm="column wrap"
-      fxLayoutGap="15px grid"
+      fxLayoutGap="10px grid"
     >
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-card-header>
-          <mat-card-title *ngIf="!showUpdateButton"> Add Todo </mat-card-title>
-          <mat-card-title *ngIf="showUpdateButton"> Edit Todo </mat-card-title>
+          <div class="margin-top-10px">
+            <mat-card-title *ngIf="!showUpdateButton">
+              Add Todo
+            </mat-card-title>
+            <mat-card-title *ngIf="showUpdateButton">
+              Edit Todo
+            </mat-card-title>
+          </div>
         </mat-card-header>
         <mat-card-content>
           <mat-form-field class="full-width" appearance="fill">
@@ -44,7 +51,7 @@
             <mat-radio-group
               aria-label="Select a priority option"
               formControlName="priority"
-              (change)="picker.open()"
+              (change)="priorityChanged(picker)"
             >
               <mat-label>Priority: &nbsp; </mat-label>
               <mat-radio-button
@@ -69,6 +76,7 @@
           <mat-form-field class="margin-bottom-15px" appearance="fill">
             <mat-label>Due Date</mat-label>
             <input
+              class="full-width"
               matInput
               [matDatepicker]="picker"
               formControlName="dueDate"
@@ -78,7 +86,11 @@
             <mat-datepicker-toggle matSuffix [for]="picker">
               <!-- https://angular.io/api/common/AsyncPipe -->
               <!-- show the modal touchUi calendar on handsets -->
-              <mat-datepicker #picker disabled="false" [touchUi]="(isHandset | async)? 'true' : 'false'"></mat-datepicker>
+              <mat-datepicker
+                #picker
+                disabled="false"
+                [touchUi]="(isHandset | async) ? 'true' : 'false'"
+              ></mat-datepicker>
             </mat-datepicker-toggle>
             <mat-error
               *ngIf="
@@ -123,9 +135,12 @@
       </mat-card>
 
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
-        <mat-card-title>My Todo List</mat-card-title>
+        <mat-card-title class="padding-top-10px padding-left-10px"
+          >My Todo List</mat-card-title
+        >
 
         <mat-card
+          class="todo"
           (mouseover)="t.showCardButtons = true"
           (mouseleave)="t.showCardButtons = false"
           *ngFor="let t of todoValues"
