@@ -3,14 +3,13 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { Todo } from './Todo';
-import { v4 as uuidv4 } from 'uuid';
 import { MatDialog } from '@angular/material/dialog';
+import { v4 as uuidv4 } from 'uuid';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { OkDialogComponent } from './components/ok-dialog/ok-dialog.component';
+import { Todo } from './Todo';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -78,6 +77,8 @@ export class AppComponent {
         modifyTodo.task = this.form.value.task;
         modifyTodo.priority = this.form.value.priority;
         modifyTodo.dueDate = this.form.value.dueDate;
+        // if completed, show the delete and edit buttons
+        modifyTodo.showCardButtons = modifyTodo.completed;
         // update the local storage
         localStorage.setItem(this.editTodoId, JSON.stringify(modifyTodo));
         this.resetForm();
@@ -95,6 +96,10 @@ export class AppComponent {
 
   markDone(todo: Todo, completed: boolean) {
     todo.completed = completed;
+
+    // if completed show the edit and delete buttons
+    todo.showCardButtons = completed;
+
     // save the completed todo back to local storage and override existing id
     localStorage.setItem(todo.taskId, JSON.stringify(todo));
   }
@@ -141,8 +146,7 @@ export class AppComponent {
     this.dialog.open(OkDialogComponent, {
       data: {
         title: 'About this app',
-        content:
-          `This simple app stores the list of todos inside your device's browser app's
+        content: `This simple app stores the list of todos inside your device's browser app's
           local storage and is not synced across devices or browsers.`,
       },
     });
