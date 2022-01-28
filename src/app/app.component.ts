@@ -36,7 +36,7 @@ export class AppComponent {
   showUpdateButton: boolean = false;
   // observes if the breakpoint matches the Handset size inside the Breakpoints
   // https://stackoverflow.com/questions/47477601/how-to-change-the-touchui-property-on-mat-datepicker-in-angular-material
-  isHandset: Observable<boolean> = this.breakpointObserver
+  isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result) => result.matches));
 

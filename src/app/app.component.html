@@ -88,7 +88,7 @@
               <mat-datepicker
                 #picker
                 disabled="false"
-                [touchUi]="(isHandset | async) ? 'true' : 'false'"
+                [touchUi]="(isHandset$ | async) ? 'true' : 'false'"
               ></mat-datepicker>
             </mat-datepicker-toggle>
             <mat-error
