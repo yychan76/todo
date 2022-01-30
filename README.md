@@ -1,4 +1,10 @@
-# Workshop23Todo
+# Client Side Foundation Workshop 3 - Todo App
+
+##  Objective
+
+The objective of this workshop is to learn to use Angular Forms to accept and process data.
+
+---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
 
