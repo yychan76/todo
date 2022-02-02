@@ -215,7 +215,7 @@ export class AppComponent {
   }
 
   sort() {
-    console.log('sort:', this.sortBy, this.sortDirection);
+    // console.log('sort:', this.sortBy, this.sortDirection);
     switch (this.sortBy) {
       case 'priority':
         this.todoValues.sort(
@@ -241,11 +241,7 @@ export class AppComponent {
 
   toggleSortDirection() {
     this.sortDirectionAsc = this.sortDirection == 'asc';
-    console.log(
-      'toggleSortDirection:',
-      this.sortDirectionAsc,
-      this.sortDirection
-    );
+    // console.log('toggleSortDirection:', this.sortDirectionAsc, this.sortDirection);
     this.sort();
   }
 
