@@ -15,6 +15,7 @@ import { map, Observable } from 'rxjs';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -58,7 +59,8 @@ export class AppComponent {
     private dialog: MatDialog,
     private breakpointObserver: BreakpointObserver,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private scroller: ViewportScroller
   ) {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.form = this.fb.group({
@@ -146,6 +148,7 @@ export class AppComponent {
   }
 
   editTodo(todo: Todo) {
+    this.scroller.scrollToAnchor('addTodoHeader');
     // store the taskId in this component's editTodoId property
     this.editTodoId = todo.taskId;
     // enable the update button

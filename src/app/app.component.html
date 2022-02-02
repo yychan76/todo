@@ -25,7 +25,7 @@
       fxLayoutGap="10px grid"
     >
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
-        <mat-card-header>
+        <mat-card-header id="addTodoHeader">
           <div class="margin-top-10px margin-bottom-10px padding-left-10px">
             <mat-card-title *ngIf="!showUpdateButton">
               Add Todo
@@ -149,10 +149,16 @@
               fxFlex="20%"
               fxFlex.lt-sm="40%"
             >
-              <mat-card-title> My{{ todoValues.length? ' ' + todoValues.length : '' }} Todos </mat-card-title>
+              <mat-card-title>
+                My{{ todoValues.length ? " " + todoValues.length : "" }} Todos
+              </mat-card-title>
             </div>
             <div fxFlex>
-              <div fxLayout="row wrap" fxLayout.lt-sm="column wrap" fxLayoutGap.lt-sm="10px">
+              <div
+                fxLayout="row wrap"
+                fxLayout.lt-sm="column wrap"
+                fxLayoutGap.lt-sm="10px"
+              >
                 <div
                   fxFlex="50%"
                   fxFlex.lt-sm="100%"
@@ -302,7 +308,9 @@
           You have hidden all Todos.
         </h3>
         <h3 class="padding-left-10px" *ngIf="showHideWarning()">
-          Some {{ getPrioritiesWithHiddenTodos().join(', ') | titlecase }} Priority Todos are hidden.
+          Some
+          {{ getPrioritiesWithHiddenTodos().join(", ") | titlecase }} Priority
+          Todos are hidden.
         </h3>
       </mat-card>
     </div>
