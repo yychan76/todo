@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1643774965530,
+  "timestamp": 1643775177462,
   "index": "/todo/index.html",
   "assetGroups": [
     {
@@ -92,7 +92,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/todo/assets/icons/apple-icon-180.png": "1a8960f5ec965571567cea09adf56c1cce89428a",
+    "/todo/assets/icons/apple-icon-180.png": "8fe559612363c99c5ae6078044ecb57d6e943f6d",
     "/todo/assets/icons/apple-splash-1125-2436.jpg": "91e93707725c408236e936265d883c0039356297",
     "/todo/assets/icons/apple-splash-1136-640.jpg": "0209abcb2e9efd8b96540c2891d57d4227b755a1",
     "/todo/assets/icons/apple-splash-1170-2532.jpg": "9ca4aa965acdb30d239dd4ed646ced22702038d1",
@@ -146,8 +146,8 @@
     "/todo/assets/icons/apple-splash-dark-750-1334.jpg": "9d46c8ea81d98a4d8d6fbe3b14bd990e28ffd561",
     "/todo/assets/icons/apple-splash-dark-828-1792.jpg": "f223249af7f5b7d5ebc8232b066e02755049f408",
     "/todo/assets/icons/favicon-196.png": "76f26ac0669230c00802c3147543df01da918af8",
-    "/todo/assets/icons/manifest-icon-192.maskable.png": "cb33ac6355305fdfab768663387cef79d64605df",
-    "/todo/assets/icons/manifest-icon-512.maskable.png": "080c5b4b146800540b5b94732b4930b0b358ea49",
+    "/todo/assets/icons/manifest-icon-192.maskable.png": "387343c67c48046c977536e2afc7b70ea2f115a4",
+    "/todo/assets/icons/manifest-icon-512.maskable.png": "d8a1ec520d16638d5c77162ebecf5a56bbd772ad",
     "/todo/assets/logo.svg": "f77c46df3342f93e69bd5883da582f9363da3cc4",
     "/todo/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
     "/todo/index.html": "cfb3a649e6176aeafe73af84d48625d39761139a",
