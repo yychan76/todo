@@ -161,7 +161,8 @@
                   <mat-button-toggle-group
                     [(ngModel)]="priorityHide"
                     [ngModelOptions]="{ standalone: true }"
-                    title="Hide Todos with Priorities"
+                    matTooltip="Hide Todos with Priorities"
+                    matTooltipPosition="before"
                     aria-label="Hide Todos with Priorities"
                     multiple
                     (change)="hidePriorities()"
@@ -171,7 +172,7 @@
                       *ngFor="let p of priorities"
                       value="{{ p }}"
                       [style.color]="priorityColors.get(p)"
-                      title="Hide {{ p | titlecase }} Priority"
+                      matTooltip="Hide {{ p | titlecase }} Priority"
                       aria-label="Hide {{ p | titlecase }} Priority"
                     >
                       {{ p | titlecase }}
@@ -186,28 +187,29 @@
                   <mat-button-toggle-group
                     [(ngModel)]="sortBy"
                     [ngModelOptions]="{ standalone: true }"
-                    title="Sort Todos"
+                    matTooltip="Sort Todos"
+                    matTooltipPosition="before"
                     aria-label="Sort Todos"
                     (change)="sort()"
                   >
                     <mat-icon>sort</mat-icon>
                     <mat-button-toggle
                       value="priority"
-                      title="Sort by Priority"
+                      matTooltip="Sort by Priority"
                       aria-label="Sort by Priority"
                     >
                       <mat-icon>priority_high</mat-icon>
                     </mat-button-toggle>
                     <mat-button-toggle
                       value="due_date"
-                      title="Sort by Due Date"
+                      matTooltip="Sort by Due Date"
                       aria-label="Sort by Due Date"
                     >
                       <mat-icon>calendar_month</mat-icon>
                     </mat-button-toggle>
                     <mat-button-toggle
                       value="alpha"
-                      titleß="Sort Alphabetically"
+                      matTooltip="Sort Alphabetically"
                       aria-label="Sort Alphabetically"
                     >
                       <mat-icon>sort_by_alpha</mat-icon>
@@ -222,7 +224,7 @@
                     <mat-button-toggle
                       *ngIf="sortDirection == 'asc' || sortDirection == ''"
                       value="desc"
-                      title="Sort Descending"
+                      matTooltip="Sort Descending"
                       aria-label="Sort Descending"
                     >
                       <mat-icon>keyboard_arrow_up</mat-icon>
@@ -230,7 +232,7 @@
                     <mat-button-toggle
                       *ngIf="sortDirection == 'desc'"
                       value="asc"
-                      title="Sort Ascending"
+                      matTooltip="Sort Ascending"
                       aria-label="Sort Ascending"
                     >
                       <mat-icon>keyboard_arrow_down</mat-icon>
@@ -276,7 +278,7 @@
           >
             <button
               mat-icon-button
-              title="Edit this Todo"
+              matTooltip="Edit this Todo"
               aria-label="Edit this Todo"
               type="button"
               (click)="editTodo(t)"
@@ -286,7 +288,7 @@
             <button
               mat-icon-button
               color="warn"
-              title="Delete this Todo"
+              matTooltip="Delete this Todo"
               aria-label="Delete this Todo"
               type="button"
               (click)="deleteTodo(t)"
@@ -300,7 +302,7 @@
           You have hidden all Todos.
         </h3>
         <h3 class="padding-left-10px" *ngIf="showHideWarning()">
-          Some {{ getPrioritiesWithHiddenTodos().join(', ') | titlecase }} Todos are hidden.
+          Some {{ getPrioritiesWithHiddenTodos().join(', ') | titlecase }} Priority Todos are hidden.
         </h3>
       </mat-card>
     </div>

@@ -12,6 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const MATERIAL = [
   MatButtonModule,
@@ -27,6 +28,7 @@ const MATERIAL = [
   MatIconModule,
   MatDialogModule,
   MatButtonToggleModule,
+  MatTooltipModule,
 ];
 
 @NgModule({
