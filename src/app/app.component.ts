@@ -153,6 +153,8 @@ export class AppComponent {
     this.taskFormControl.setValue(todo.task);
     this.priorityFormControl.setValue(todo.priority);
     this.dueDateFormControl.setValue(todo.dueDate);
+    // run the validator on the due date in case it has already passed
+    this.dueDateFormControl.markAsTouched();
   }
 
   deleteTodo(todo: Todo) {
