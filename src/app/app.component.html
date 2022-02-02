@@ -26,7 +26,7 @@
     >
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-card-header>
-          <div class="margin-top-10px">
+          <div class="margin-top-10px margin-bottom-10px padding-left-10px">
             <mat-card-title *ngIf="!showUpdateButton">
               Add Todo
             </mat-card-title>
@@ -58,7 +58,7 @@
                 *ngFor="let p of priorities"
                 value="{{ p }}"
                 [style.color]="priorityColors.get(p)"
-                ariaLabel="p"
+                aria-label="{{ p }} Priority"
               >
                 {{ p | titlecase }} &nbsp;
               </mat-radio-button>
@@ -73,7 +73,10 @@
               </mat-error>
             </mat-radio-group>
           </div>
-          <mat-form-field class="margin-bottom-15px full-width" appearance="fill">
+          <mat-form-field
+            class="margin-bottom-15px full-width"
+            appearance="fill"
+          >
             <mat-label>Due Date</mat-label>
             <input
               matInput
@@ -117,7 +120,7 @@
               type="submit"
               [disabled]="form.invalid"
             >
-              {{ showUpdateButton? 'Add as New Todo' : 'Add'}}
+              {{ showUpdateButton ? "Add as New Todo" : "Add" }}
             </button>
             &nbsp;
             <button
@@ -135,9 +138,109 @@
       </mat-card>
 
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
-        <mat-card-title class="padding-top-10px padding-left-10px"
-          >My Todo List</mat-card-title
-        >
+        <mat-card-header>
+          <div
+            class="full-width"
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+          >
+            <div
+              class="margin-top-10px margin-bottom-10px padding-left-10px"
+              fxFlex="20%"
+              fxFlex.lt-sm="40%"
+            >
+              <mat-card-title> My{{ todoValues.length? ' ' + todoValues.length : '' }} Todos </mat-card-title>
+            </div>
+            <div fxFlex>
+              <div fxLayout="row wrap" fxLayout.lt-sm="column wrap" fxLayoutGap.lt-sm="10px">
+                <div
+                  fxFlex="50%"
+                  fxFlex.lt-sm="100%"
+                  fxLayoutAlign="end center"
+                >
+                  <mat-button-toggle-group
+                    [(ngModel)]="priorityHide"
+                    [ngModelOptions]="{ standalone: true }"
+                    title="Hide Todos with Priorities"
+                    aria-label="Hide Todos with Priorities"
+                    multiple
+                    (change)="hidePriorities()"
+                  >
+                    <mat-icon>visibility_off</mat-icon>
+                    <mat-button-toggle
+                      *ngFor="let p of priorities"
+                      value="{{ p }}"
+                      [style.color]="priorityColors.get(p)"
+                      title="Hide {{ p | titlecase }} Priority"
+                      aria-label="Hide {{ p | titlecase }} Priority"
+                    >
+                      {{ p | titlecase }}
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+                <div
+                  fxFlex="50%"
+                  fxFlex.lt-sm="100%"
+                  fxLayoutAlign="end center"
+                >
+                  <mat-button-toggle-group
+                    [(ngModel)]="sortBy"
+                    [ngModelOptions]="{ standalone: true }"
+                    title="Sort Todos"
+                    aria-label="Sort Todos"
+                    (change)="sort()"
+                  >
+                    <mat-icon>sort</mat-icon>
+                    <mat-button-toggle
+                      value="priority"
+                      title="Sort by Priority"
+                      aria-label="Sort by Priority"
+                    >
+                      <mat-icon>priority_high</mat-icon>
+                    </mat-button-toggle>
+                    <mat-button-toggle
+                      value="due_date"
+                      title="Sort by Due Date"
+                      aria-label="Sort by Due Date"
+                    >
+                      <mat-icon>calendar_month</mat-icon>
+                    </mat-button-toggle>
+                    <mat-button-toggle
+                      value="alpha"
+                      titleß="Sort Alphabetically"
+                      aria-label="Sort Alphabetically"
+                    >
+                      <mat-icon>sort_by_alpha</mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                  <mat-button-toggle-group
+                    [(ngModel)]="sortDirection"
+                    [ngModelOptions]="{ standalone: true }"
+                    aria-label="Sort Direction"
+                    (change)="toggleSortDirection()"
+                  >
+                    <mat-button-toggle
+                      *ngIf="sortDirection == 'asc' || sortDirection == ''"
+                      value="desc"
+                      title="Sort Descending"
+                      aria-label="Sort Descending"
+                    >
+                      <mat-icon>keyboard_arrow_up</mat-icon>
+                    </mat-button-toggle>
+                    <mat-button-toggle
+                      *ngIf="sortDirection == 'desc'"
+                      value="asc"
+                      title="Sort Ascending"
+                      aria-label="Sort Ascending"
+                    >
+                      <mat-icon>keyboard_arrow_down</mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-header>
 
         <mat-card
           class="todo"
@@ -173,23 +276,32 @@
           >
             <button
               mat-icon-button
+              title="Edit this Todo"
               aria-label="Edit this Todo"
               type="button"
-              (click)="edit(t)"
+              (click)="editTodo(t)"
             >
               <mat-icon>edit</mat-icon>
             </button>
             <button
               mat-icon-button
               color="warn"
+              title="Delete this Todo"
               aria-label="Delete this Todo"
               type="button"
-              (click)="delete(t)"
+              (click)="deleteTodo(t)"
             >
               <mat-icon>delete</mat-icon>
             </button>
           </div>
         </mat-card>
+
+        <h3 class="padding-left-10px" *ngIf="showHideAllWarning()">
+          You have hidden all Todos.
+        </h3>
+        <h3 class="padding-left-10px" *ngIf="showHideWarning()">
+          Some {{ getPrioritiesWithHiddenTodos().join(', ') | titlecase }} Todos are hidden.
+        </h3>
       </mat-card>
     </div>
   </form>

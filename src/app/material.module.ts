@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule} from '@angular/material/button-toggle';
 
 const MATERIAL = [
   MatButtonModule,
@@ -25,6 +26,7 @@ const MATERIAL = [
   MatDividerModule,
   MatIconModule,
   MatDialogModule,
+  MatButtonToggleModule,
 ];
 
 @NgModule({

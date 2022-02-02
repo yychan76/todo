@@ -26,6 +26,7 @@ export class AppComponent {
   form: FormGroup;
   tomorrow = new Date();
   todoValues: Todo[] = [];
+  beforeHideTodoValues: Todo[] = [];
   priorities = ['low', 'normal', 'high'];
   priorityColors = new Map([
     ['low', 'skyblue'],
@@ -34,6 +35,11 @@ export class AppComponent {
   ]);
   editTodoId: string | undefined;
   showUpdateButton: boolean = false;
+  sortBy: string = '';
+  sortDirection: string = '';
+  sortDirectionAsc: boolean = true;
+  priorityHide: string[] = [];
+
   // observes if the breakpoint matches the Handset size inside the Breakpoints
   // https://stackoverflow.com/questions/47477601/how-to-change-the-touchui-property-on-mat-datepicker-in-angular-material
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -43,6 +49,7 @@ export class AppComponent {
   taskFormControl = new FormControl('', [Validators.required]);
   priorityFormControl = new FormControl('', [Validators.required]);
   dueDateFormControl = new FormControl('', [Validators.required]);
+  // don't use form control for the priority hide and sort toggle buttons as form submit will reset them
 
   // constructor only runs once when the application is started
   // ngOnInit will be called each time the page is refreshed, for showing of date retrieved
@@ -138,7 +145,7 @@ export class AppComponent {
     };
   }
 
-  edit(todo: Todo) {
+  editTodo(todo: Todo) {
     // store the taskId in this component's editTodoId property
     this.editTodoId = todo.taskId;
     // enable the update button
@@ -148,7 +155,7 @@ export class AppComponent {
     this.dueDateFormControl.setValue(todo.dueDate);
   }
 
-  delete(todo: Todo) {
+  deleteTodo(todo: Todo) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Confirm Delete: ' + todo.task,
@@ -180,5 +187,91 @@ export class AppComponent {
     this.dueDateFormControl.hasError('required')
       ? picker.open()
       : this.dueDateFormControl.markAsTouched();
+  }
+
+  hidePriorities() {
+    // console.log(this.form.value.priorityHide);
+    // if we had previously saved a backup of the array before hiding, restore the backup
+    if (this.beforeHideTodoValues.length) {
+      this.todoValues = this.beforeHideTodoValues.slice();
+    }
+    // save a backup of the array
+    this.beforeHideTodoValues = this.todoValues.slice();
+    this.todoValues = this.todoValues.filter(
+      (item) => !this.priorityHide.includes(item.priority)
+    );
+    this.sort();
+  }
+
+  getPriorityTodos(priority: string) {
+    return this.beforeHideTodoValues.filter(
+      (item) => item.priority == priority
+    );
+  }
+
+  sort() {
+    console.log('sort:', this.sortBy, this.sortDirection);
+    switch (this.sortBy) {
+      case 'priority':
+        this.todoValues.sort(
+          (a, b) =>
+            this.priorities.indexOf(a.priority) -
+            this.priorities.indexOf(b.priority)
+        );
+        break;
+      case 'due_date':
+        this.todoValues.sort(
+          (a, b) =>
+            new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+        );
+        break;
+      case 'alpha':
+        this.todoValues.sort((a, b) => a.task.localeCompare(b.task));
+        break;
+    }
+    if (!this.sortDirectionAsc) {
+      this.todoValues.reverse();
+    }
+  }
+
+  toggleSortDirection() {
+    this.sortDirectionAsc = this.sortDirection == 'asc';
+    console.log(
+      'toggleSortDirection:',
+      this.sortDirectionAsc,
+      this.sortDirection
+    );
+    this.sort();
+  }
+
+  showHideAllWarning() {
+    // returns true if all the todos are hidden by priority
+    // console.log('showHideAllWarning:', this.priorityHide);
+    if (this.beforeHideTodoValues) {
+      return (
+        this.beforeHideTodoValues.length > 0 &&
+        this.priorities.length == this.priorityHide.length
+      );
+    }
+    return false;
+  }
+
+  showHideWarning() {
+    // returns true if some of the todos are hidden by priority
+    // console.log('showHideWarning:', this.priorityHide);
+    if (this.beforeHideTodoValues) {
+      return (
+        this.beforeHideTodoValues.length > 0 &&
+        this.beforeHideTodoValues.length != this.todoValues.length &&
+        this.priorities.length != this.priorityHide.length
+      );
+    }
+    return false;
+  }
+
+  getPrioritiesWithHiddenTodos() {
+    return this.priorityHide.filter((p) => {
+      return this.getPriorityTodos(p).length > 0;
+    });
   }
 }

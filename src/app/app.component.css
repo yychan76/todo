@@ -17,6 +17,9 @@
 .margin-top-10px {
   margin-top: 10px;
 }
+.margin-bottom-10px {
+  margin-bottom: 10px;
+}
 
 .padding-top-10px {
   padding-top: 10px;
@@ -43,6 +46,29 @@
 
 input {
   font-size: 12px;
+}
+
+/* .material-icons {
+  vertical-align: middle;
+} */
+
+.vertical-align {
+  line-height: 100%;
+}
+
+::ng-deep .mat-card-header-text {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+::ng-deep .mat-card-title {
+  margin-bottom: 0px !important;
+}
+
+
+.mat-button-toggle-group {
+  height: 24px;
+  align-items: center;
 }
 
 @media screen and (max-width: 600px) {
