@@ -17,6 +17,17 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ViewportScroller } from '@angular/common';
 
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+// import {default as _rollupMoment} from 'moment';
+
+// const moment = _rollupMoment || _moment;
+const moment = _moment;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -40,6 +51,20 @@ export class AppComponent {
   sortDirection: string = '';
   sortDirectionAsc: boolean = true;
   priorityHide: string[] = [];
+  dueDateRanges: string[] = [
+    'all',
+    'overdue',
+    'today',
+    'tomorrow',
+    'this week',
+    'next week',
+    'this month',
+    'next month',
+    'this quarter',
+    'next quarter',
+    'this year',
+    'next year',
+  ];
 
   // observes if the breakpoint matches the Handset size inside the Breakpoints
   // https://stackoverflow.com/questions/47477601/how-to-change-the-touchui-property-on-mat-datepicker-in-angular-material
@@ -273,6 +298,63 @@ export class AppComponent {
   getPrioritiesWithHiddenTodos() {
     return this.priorityHide.filter((p) => {
       return this.getPriorityTodos(p).length > 0;
+    });
+  }
+
+  getDateRangeTodos(dateRange: string) {
+    return this.todoValues.filter((item) => {
+      switch (dateRange) {
+        case 'all':
+          return true;
+        case 'overdue':
+          return moment(item.dueDate).isBefore(moment());
+        case 'today':
+          return moment(item.dueDate).isSame(moment(), 'day');
+        case 'tomorrow':
+          return moment(item.dueDate).isSame(moment().add(1, 'days'), 'day');
+        case 'this week':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('week'),
+            moment().endOf('week')
+          );
+        case 'next week':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('week').add(7, 'days'),
+            moment().endOf('week').add(7, 'days')
+          );
+        case 'this month':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('month'),
+            moment().endOf('month')
+          );
+        case 'next month':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('month').add(1, 'months'),
+            moment().endOf('month').add(1, 'months')
+          );
+        case 'this quarter':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('quarter'),
+            moment().endOf('quarter')
+          );
+        case 'next quarter':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('quarter').add(1, 'quarters'),
+            moment().endOf('quarter').add(1, 'quarters')
+          );
+        case 'this year':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('year'),
+            moment().endOf('year')
+          );
+        case 'next year':
+          return moment(item.dueDate).isBetween(
+            moment().startOf('year').add(1, 'years'),
+            moment().endOf('year').add(1, 'years')
+          );
+        default:
+          return true;
+      }
     });
   }
 }

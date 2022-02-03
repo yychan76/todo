@@ -156,6 +156,7 @@
             <div fxFlex>
               <div
                 fxLayout="row wrap"
+                fxLayoutGap="0"
                 fxLayout.lt-sm="column wrap"
                 fxLayoutGap.lt-sm="10px"
               >
@@ -249,60 +250,69 @@
             </div>
           </div>
         </mat-card-header>
+        <mat-tab-group>
+          <mat-tab *ngFor="let tab of dueDateRanges" aria-label="{{ tab }} Todos">
+            <ng-template mat-tab-label>
+              <mat-icon>av_timer</mat-icon>
+              {{ tab | titlecase }}
+            </ng-template>
 
-        <mat-card
-          class="todo"
-          (mouseover)="t.showCardButtons = true"
-          (mouseleave)="t.showCardButtons = false"
-          *ngFor="let t of todoValues"
-        >
-          <mat-card-title>
-            <div fxLayout="row" fxLayoutAlign="space-between start">
-              <mat-checkbox
-                [checked]="t.completed ? t.completed : false"
-                (change)="markDone(t, $event.checked)"
+            <mat-card
+              class="todo"
+              (mouseover)="t.showCardButtons = true"
+              (mouseleave)="t.showCardButtons = false"
+              *ngFor="let t of getDateRangeTodos(tab)"
+            >
+              <mat-card-title>
+                <div fxLayout="row" fxLayoutAlign="space-between start">
+                  <mat-checkbox
+                    [checked]="t.completed ? t.completed : false"
+                    (change)="markDone(t, $event.checked)"
+                  >
+                    <span [style]="getDoneStyle(t)">{{
+                      t.task
+                    }}</span></mat-checkbox
+                  >
+                </div>
+              </mat-card-title>
+              <div fxLayout="row" fxLayoutAlign="space-between end">
+                <mat-card-subtitle [style]="getDoneStyle(t, true)"
+                  >Priority: {{ t.priority | titlecase }}</mat-card-subtitle
+                >
+                <mat-card-subtitle [style]="getDoneStyle(t)">{{
+                  t.dueDate | date
+                }}</mat-card-subtitle>
+              </div>
+              <div
+                *ngIf="t.showCardButtons"
+                fxLayout="row"
+                fxLayoutAlign="end"
+                fxLayoutGap="5px"
               >
-                <span [style]="getDoneStyle(t)">{{
-                  t.task
-                }}</span></mat-checkbox
-              >
-            </div>
-          </mat-card-title>
-          <div fxLayout="row" fxLayoutAlign="space-between end">
-            <mat-card-subtitle [style]="getDoneStyle(t, true)"
-              >Priority: {{ t.priority | titlecase }}</mat-card-subtitle
-            >
-            <mat-card-subtitle [style]="getDoneStyle(t)">{{
-              t.dueDate | date
-            }}</mat-card-subtitle>
-          </div>
-          <div
-            *ngIf="t.showCardButtons"
-            fxLayout="row"
-            fxLayoutAlign="end"
-            fxLayoutGap="5px"
-          >
-            <button
-              mat-icon-button
-              matTooltip="Edit this Todo"
-              aria-label="Edit this Todo"
-              type="button"
-              (click)="editTodo(t)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              color="warn"
-              matTooltip="Delete this Todo"
-              aria-label="Delete this Todo"
-              type="button"
-              (click)="deleteTodo(t)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </mat-card>
+                <button
+                  mat-icon-button
+                  matTooltip="Edit this Todo"
+                  aria-label="Edit this Todo"
+                  type="button"
+                  (click)="editTodo(t)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  matTooltip="Delete this Todo"
+                  aria-label="Delete this Todo"
+                  type="button"
+                  (click)="deleteTodo(t)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-card>
+          </mat-tab>
+
+        </mat-tab-group>
 
         <h3 class="padding-left-10px" *ngIf="showHideAllWarning()">
           You have hidden all Todos.
