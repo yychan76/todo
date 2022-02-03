@@ -64,6 +64,7 @@ export class AppComponent {
     'next quarter',
     'this year',
     'next year',
+    'completed',
   ];
 
   // observes if the breakpoint matches the Handset size inside the Breakpoints
@@ -161,11 +162,28 @@ export class AppComponent {
     localStorage.setItem(todo.taskId, JSON.stringify(todo));
   }
 
-  getDoneStyle(todo: Todo, priorityLabel?: boolean) {
-    // if this is for the priority label we set the color, otherwise don't set it
-    let textColor = priorityLabel
-      ? this.priorityColors.get(todo.priority)
-      : null;
+  getOverdueClass(todo: Todo) {
+    // if the todo is not completed and overdue, add the overdue class
+    return {
+      overdue: !todo.completed && moment(todo.dueDate).isBefore(moment())
+    }
+  }
+
+  getDoneStyle(todo: Todo, type?: string) {
+    let textColor = null;
+    let overdue = moment(todo.dueDate).isBefore(moment());
+    switch (type) {
+      // if this is for the priority label we set the color, otherwise don't set it
+      case 'priority':
+        textColor = this.priorityColors.get(todo.priority)
+        break;
+      // if this is for the dueDate label, we set to red if overdue
+      case 'dueDate':
+        textColor = overdue ? 'red' : null;
+        break;
+      default:
+        break;
+    }
     return {
       'text-decoration': todo.completed ? 'line-through' : 'none',
       color: todo.completed ? 'silver' : textColor,
@@ -307,7 +325,7 @@ export class AppComponent {
         case 'all':
           return true;
         case 'overdue':
-          return moment(item.dueDate).isBefore(moment());
+          return !item.completed && moment(item.dueDate).isBefore(moment());
         case 'today':
           return moment(item.dueDate).isSame(moment(), 'day');
         case 'tomorrow':
@@ -352,9 +370,24 @@ export class AppComponent {
             moment().startOf('year').add(1, 'years'),
             moment().endOf('year').add(1, 'years')
           );
+        case 'completed':
+          return item.completed;
         default:
           return true;
       }
     });
+  }
+
+  getTabIcon(tab: string) {
+    switch (tab) {
+      case 'completed':
+        return 'task_alt';
+      case 'all':
+        return 'checklist ';
+      case 'overdue':
+        return 'notification_important';
+      default:
+        return 'av_timer';
+    }
   }
 }

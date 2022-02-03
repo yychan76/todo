@@ -65,6 +65,9 @@ input {
   margin-bottom: 0px !important;
 }
 
+.overdue::before {
+  content: "!! ";
+}
 
 .mat-button-toggle-group {
   height: 24px;

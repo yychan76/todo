@@ -253,7 +253,7 @@
         <mat-tab-group>
           <mat-tab *ngFor="let tab of dueDateRanges" aria-label="{{ tab }} Todos">
             <ng-template mat-tab-label>
-              <mat-icon>av_timer</mat-icon>
+              <mat-icon *ngIf="getTabIcon(tab)">{{ getTabIcon(tab) }}</mat-icon>
               {{ tab | titlecase }}
             </ng-template>
 
@@ -276,10 +276,10 @@
                 </div>
               </mat-card-title>
               <div fxLayout="row" fxLayoutAlign="space-between end">
-                <mat-card-subtitle [style]="getDoneStyle(t, true)"
+                <mat-card-subtitle [style]="getDoneStyle(t, 'priority')"
                   >Priority: {{ t.priority | titlecase }}</mat-card-subtitle
                 >
-                <mat-card-subtitle [style]="getDoneStyle(t)">{{
+                <mat-card-subtitle [class]="getOverdueClass(t)" [style]="getDoneStyle(t, 'dueDate')">{{
                   t.dueDate | date
                 }}</mat-card-subtitle>
               </div>
