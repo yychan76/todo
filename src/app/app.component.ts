@@ -165,13 +165,13 @@ export class AppComponent {
   getOverdueClass(todo: Todo) {
     // if the todo is not completed and overdue, add the overdue class
     return {
-      overdue: !todo.completed && moment(todo.dueDate).isBefore(moment())
+      overdue: !todo.completed && moment(todo.dueDate).isBefore(moment().startOf('day'))
     }
   }
 
   getDoneStyle(todo: Todo, type?: string) {
     let textColor = null;
-    let overdue = moment(todo.dueDate).isBefore(moment());
+    let overdue = moment(todo.dueDate).isBefore(moment().startOf('day'));
     switch (type) {
       // if this is for the priority label we set the color, otherwise don't set it
       case 'priority':
@@ -325,7 +325,7 @@ export class AppComponent {
         case 'all':
           return true;
         case 'overdue':
-          return !item.completed && moment(item.dueDate).isBefore(moment());
+          return !item.completed && moment(item.dueDate).isBefore(moment().startOf('day'));
         case 'today':
           return moment(item.dueDate).isSame(moment(), 'day');
         case 'tomorrow':
