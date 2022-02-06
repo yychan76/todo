@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -22,6 +22,7 @@ import { ViewportScroller } from '@angular/common';
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
 // the `default as` syntax.
 import * as _moment from 'moment';
+import { OverlayContainer } from '@angular/cdk/overlay';
 // tslint:disable-next-line:no-duplicate-imports
 // import {default as _rollupMoment} from 'moment';
 
@@ -31,7 +32,7 @@ const moment = _moment;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'Workshop23 - Todo App';
@@ -66,6 +67,13 @@ export class AppComponent {
     'next year',
     'completed',
   ];
+  darkModeEnabled: boolean = false;
+
+  // The HostBinding allows us to add the class to the component itself, rather
+  // than any of its children, thus removing the need for us to add any explicit
+  // parent container inside.
+  // https://zoaibkhan.com/blog/angular-material-dark-mode-in-3-steps/
+  @HostBinding('class') className = '';
 
   // observes if the breakpoint matches the Handset size inside the Breakpoints
   // https://stackoverflow.com/questions/47477601/how-to-change-the-touchui-property-on-mat-datepicker-in-angular-material
@@ -76,6 +84,7 @@ export class AppComponent {
   taskFormControl = new FormControl('', [Validators.required]);
   priorityFormControl = new FormControl('', [Validators.required]);
   dueDateFormControl = new FormControl('', [Validators.required]);
+  darkToggleControl = new FormControl('');
   // don't use form control for the priority hide and sort toggle buttons as form submit will reset them
 
   // constructor only runs once when the application is started
@@ -86,7 +95,8 @@ export class AppComponent {
     private breakpointObserver: BreakpointObserver,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
-    private scroller: ViewportScroller
+    private scroller: ViewportScroller,
+    private overlayContainer: OverlayContainer
   ) {
     this.tomorrow.setDate(this.tomorrow.getDate() + 1);
     this.form = this.fb.group({
@@ -109,6 +119,32 @@ export class AppComponent {
       let value = localStorage.getItem(key) as string;
       this.todoValues.push(JSON.parse(value));
     }
+
+    // Initially check if dark mode is enabled on system
+    const darkModeOn =
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // console.log('darkModeOn:', darkModeOn);
+    this.darkModeEnabled = darkModeOn;
+
+    this.darkToggleControl.valueChanges.subscribe((darkMode) => {
+      // console.log('toggle: ', darkMode);
+      const darkClassName = 'darkMode';
+      this.darkModeEnabled = darkMode == 'true';
+      this.className = this.darkModeEnabled ? darkClassName : '';
+      if (this.darkModeEnabled) {
+        this.overlayContainer
+          .getContainerElement()
+          .classList.add(darkClassName);
+      } else {
+        this.overlayContainer
+          .getContainerElement()
+          .classList.remove(darkClassName);
+      }
+    });
+    // set the initial value of the dark toggle according to system preference
+    this.darkToggleControl.setValue('true');
+    // console.log('darkToggleControl:', this.darkToggleControl.value);
   }
 
   addTodo() {
@@ -165,8 +201,10 @@ export class AppComponent {
   getOverdueClass(todo: Todo) {
     // if the todo is not completed and overdue, add the overdue class
     return {
-      overdue: !todo.completed && moment(todo.dueDate).isBefore(moment().startOf('day'))
-    }
+      overdue:
+        !todo.completed &&
+        moment(todo.dueDate).isBefore(moment().startOf('day')),
+    };
   }
 
   getDoneStyle(todo: Todo, type?: string) {
@@ -175,11 +213,11 @@ export class AppComponent {
     switch (type) {
       // if this is for the priority label we set the color, otherwise don't set it
       case 'priority':
-        textColor = this.priorityColors.get(todo.priority)
+        textColor = this.priorityColors.get(todo.priority);
         break;
       // if this is for the dueDate label, we set to red if overdue
       case 'dueDate':
-        textColor = overdue ? 'red' : null;
+        textColor = overdue ? 'tomato' : null;
         break;
       default:
         break;
@@ -325,7 +363,10 @@ export class AppComponent {
         case 'all':
           return true;
         case 'overdue':
-          return !item.completed && moment(item.dueDate).isBefore(moment().startOf('day'));
+          return (
+            !item.completed &&
+            moment(item.dueDate).isBefore(moment().startOf('day'))
+          );
         case 'today':
           return moment(item.dueDate).isSame(moment(), 'day');
         case 'tomorrow':

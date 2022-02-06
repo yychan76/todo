@@ -5,7 +5,7 @@ import { DialogData } from '../confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-ok-dialog',
   templateUrl: './ok-dialog.component.html',
-  styleUrls: ['./ok-dialog.component.css']
+  styleUrls: ['./ok-dialog.component.scss']
 })
 export class OkDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) { }

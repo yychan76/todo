@@ -3,6 +3,18 @@
     <mat-icon svgIcon="logo"></mat-icon
     ><span class="padding-left-10px">Simple Todo App</span>
     <span class="spacer"></span>
+    <mat-button-toggle-group
+      [formControl]="darkToggleControl"
+      class="toggle"
+      (change)="darkToggleControl.setValue($event.value)"
+    >
+      <mat-button-toggle value="true" *ngIf="!darkModeEnabled" class="toggle">
+        <mat-icon>nightlight_round</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="false" *ngIf="darkModeEnabled" class="toggle">
+        <mat-icon>brightness_7</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
     <button
       mat-icon-button
       aria-label="About this app"
@@ -13,17 +25,13 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div class="content">
+<div class="content mat-app-background">
   <form
     [formGroup]="form"
     (ngSubmit)="addTodo(); formDirective.resetForm()"
     #formDirective="ngForm"
   >
-    <div
-      fxLayout="row wrap"
-      fxLayout.lt-sm="row wrap"
-      fxLayoutGap="10px grid"
-    >
+    <div fxLayout="row wrap" fxLayout.lt-sm="row wrap" fxLayoutGap="10px grid">
       <mat-card fxFlex="50%" fxFlex.lt-sm="100%">
         <mat-card-header id="addTodoHeader">
           <div class="margin-top-10px margin-bottom-10px padding-left-10px">
@@ -171,6 +179,7 @@
                     matTooltip="Hide Todos with Priorities"
                     matTooltipPosition="before"
                     aria-label="Hide Todos with Priorities"
+                    class="options"
                     multiple
                     (change)="hidePriorities()"
                   >
@@ -197,6 +206,7 @@
                     matTooltip="Sort Todos"
                     matTooltipPosition="before"
                     aria-label="Sort Todos"
+                    class="options"
                     (change)="sort()"
                   >
                     <mat-icon>sort</mat-icon>
@@ -226,6 +236,7 @@
                     [(ngModel)]="sortDirection"
                     [ngModelOptions]="{ standalone: true }"
                     aria-label="Sort Direction"
+                    class="options"
                     (change)="toggleSortDirection()"
                   >
                     <mat-button-toggle
@@ -251,7 +262,10 @@
           </div>
         </mat-card-header>
         <mat-tab-group>
-          <mat-tab *ngFor="let tab of dueDateRanges" aria-label="{{ tab }} Todos">
+          <mat-tab
+            *ngFor="let tab of dueDateRanges"
+            aria-label="{{ tab }} Todos"
+          >
             <ng-template mat-tab-label>
               <mat-icon *ngIf="getTabIcon(tab)">{{ getTabIcon(tab) }}</mat-icon>
               {{ tab | titlecase }}
@@ -279,9 +293,11 @@
                 <mat-card-subtitle [style]="getDoneStyle(t, 'priority')"
                   >Priority: {{ t.priority | titlecase }}</mat-card-subtitle
                 >
-                <mat-card-subtitle [class]="getOverdueClass(t)" [style]="getDoneStyle(t, 'dueDate')">{{
-                  t.dueDate | date
-                }}</mat-card-subtitle>
+                <mat-card-subtitle
+                  [class]="getOverdueClass(t)"
+                  [style]="getDoneStyle(t, 'dueDate')"
+                  >{{ t.dueDate | date }}</mat-card-subtitle
+                >
               </div>
               <div
                 *ngIf="t.showCardButtons"
@@ -311,7 +327,6 @@
               </div>
             </mat-card>
           </mat-tab>
-
         </mat-tab-group>
 
         <h3 class="padding-left-10px" *ngIf="showHideAllWarning()">
