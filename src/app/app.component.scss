@@ -54,8 +54,14 @@
   padding: 3vw 2vw;
 }
 
+html,
+body,
+app-root,
 .app-frame {
   height: 100%;
+  overflow-y: auto;
+  margin: 0;
+  overscroll-behavior-x: none;
 }
 
 input {
