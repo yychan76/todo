@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1644162283415,
+  "timestamp": 1644163190829,
   "index": "/todo/index.html",
   "assetGroups": [
     {
@@ -17,7 +17,7 @@
         "/todo/manifest.webmanifest",
         "/todo/polyfills.c71e1c0993291489.js",
         "/todo/runtime.e8106140a076c1ea.js",
-        "/todo/styles.1eacba6a17429f5e.css"
+        "/todo/styles.600ca0f215d77831.css"
       ],
       "patterns": []
     },
@@ -150,12 +150,12 @@
     "/todo/assets/icons/manifest-icon-512.maskable.png": "d8a1ec520d16638d5c77162ebecf5a56bbd772ad",
     "/todo/assets/logo.svg": "f77c46df3342f93e69bd5883da582f9363da3cc4",
     "/todo/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/todo/index.html": "0f98f0755975753e0536b5d95c672963cf0c0091",
+    "/todo/index.html": "f566c0312b6dd125060bf2645753c4d46f8a397a",
     "/todo/main.523d653810bf8ad1.js": "b542d492cafb51b7287396d5bc6d3126f02d106b",
     "/todo/manifest.webmanifest": "ab69ccb093350ac55122f745c1236188cccad0b4",
     "/todo/polyfills.c71e1c0993291489.js": "4c73b15454ed44468d89e953022ca351758a8cee",
     "/todo/runtime.e8106140a076c1ea.js": "0bc9d754aca7a77e5a14474b5df6051748c0b0cc",
-    "/todo/styles.1eacba6a17429f5e.css": "72869556f236c12c2492f185d317e5375fd8b534"
+    "/todo/styles.600ca0f215d77831.css": "008b49fb357543a0603efc369fa2887184d1d030"
   },
   "navigationUrls": [
     {
