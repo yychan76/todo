@@ -85,6 +85,11 @@ input {
   margin-bottom: 0px !important;
 }
 
+::ng-deep .mat-card-content {
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
 .overdue::before {
   content: "!! ";
 }
